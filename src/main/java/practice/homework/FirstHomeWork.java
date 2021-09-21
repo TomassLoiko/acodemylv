@@ -69,16 +69,13 @@ public class FirstHomeWork {
         System.out.printf("%d\n%d\n%d\n%d\n%d\n\n", computerInFlat, tvInFlat, soundDeviceInFlat, windowInFlat, doorInFlat);
 
         // char primitive data type
-        char firstCharOfHi = '\u0048';
-        char secondCharOfHi = '\u0069';
-        char firstCharOfAll = '\u0041';
-        char secondCharOfAll = '\u006C';
+        char firstCharOfHi = 72;
+        char secondCharOfHi = 105;
+        char firstCharOfAll = '\u0430';
+        char secondCharOfAll = 'l';
         char thirdCharOfAll = '\u006C';
-        System.out.println(firstCharOfHi);
-        System.out.println(secondCharOfHi+"\n");
-        System.out.println(firstCharOfAll);
-        System.out.println(secondCharOfAll);
-        System.out.println(thirdCharOfAll+"\n");
+        char exclamationPoint = 33;
+        System.out.println(""+firstCharOfHi + secondCharOfHi +" "+ firstCharOfAll + secondCharOfAll + thirdCharOfAll + exclamationPoint + "\n");
 
         // short primitive data type
         short numberOfDaysInWeek = 7;
