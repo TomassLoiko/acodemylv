@@ -47,15 +47,15 @@ public class LogicalOperators {
         // operator: switch
 
         int ukSize = 7;
-        int euSuze;
+        int euSize;
          switch (ukSize) {
              case 6:
-                 euSuze =39;
-                 System.out.println("EU Size: " + euSuze);
+                 euSize =39;
+                 System.out.println("EU Size: " + euSize);
                  //break;
              case 7:
-                 euSuze = (int) 40.5;
-                 System.out.println("EU Size: " + euSuze);
+                 euSize = (int) 40.5;
+                 System.out.println("EU Size: " + euSize);
                  //break;
              default:
                  System.out.println("Unknown size: " + ukSize);

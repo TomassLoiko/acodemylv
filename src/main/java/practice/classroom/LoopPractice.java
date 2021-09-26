@@ -60,6 +60,12 @@ public class LoopPractice {
             System.out.println(numbers[i]);
         }
 
+
+        for (int i = numbers.length - 1; i >= 0; --i) {
+            System.out.println(numbers[i]);
+        }
+
+
     }
 
 }
