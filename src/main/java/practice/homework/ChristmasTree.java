@@ -2,7 +2,8 @@ package practice.homework;
 
 public class ChristmasTree {
     public static void main(String[] args) {
-        int christmasTreeSize = 7;
+        int christmasTreeSize = 20;
+        int branches = christmasTreeSize*2+1;
         System.out.println("Size of the Christmas tree:\n" + christmasTreeSize);
         do {
             int noBranches = christmasTreeSize;
@@ -10,7 +11,7 @@ public class ChristmasTree {
                 System.out.print(" ");
                 noBranches--;
             }
-            int withBranches = 15-christmasTreeSize*2;
+            int withBranches = branches-christmasTreeSize*2;
             while (withBranches > 0) {
                 System.out.print("*");
                 withBranches--;
