@@ -2,14 +2,15 @@ package objects;
 
 public class Person {
 
-    private String name;
-    private String surname;
-    private int age;
-    private double weight;
-    private boolean isHetero;
+    public String name;
+    public String surname;
+    public int age;
+    public double weight;
+    public boolean isHetero;
 
     public void retrieveInformation() {
-        System.out.printf("Name is: %s\nSurname is: %s\nAge is: %d\nWeight is: %f\nIs hetero: %s", name, surname, age, weight, isHetero);
+        System.out.printf("Name is: %s\nSurname is: %s\nAge is: %d\nWeight is: %f\nIs hetero: %s\n", name, surname, age, weight, isHetero);
+        System.out.println();
     }
 
     public Person() {
@@ -27,8 +28,4 @@ public class Person {
         this.weight = weight;
         this.isHetero = isHetero;
     }
-
-    import lombok
-
-
 }
