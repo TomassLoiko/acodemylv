@@ -7,7 +7,12 @@ public class CalculatorTest {
 
 
 
-   public Calculator calculator = new Calculator("Casio");
+    public Calculator calculator = new Calculator("Casio");
+
+    @Test
+    public void CalculatorTest() {
+       assertEquals("Casio", calculator.getCalculatorName());
+    }
 
     @Test
     public void  addTest() {
