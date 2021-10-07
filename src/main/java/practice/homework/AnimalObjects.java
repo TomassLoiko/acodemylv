@@ -10,6 +10,14 @@ public class AnimalObjects {
         Animal horse = new Animal("Horse", "Smokey",false, 4);
         Animal pig = new Animal("Pig", "Pinki", false, 4);
 
+//        Tamagotchi mouse = new Tamagotchi("Tiger", true, 4);
+
+
+
+
+
+
+
 
 
 
