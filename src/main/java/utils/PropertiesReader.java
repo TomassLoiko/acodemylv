@@ -11,11 +11,12 @@ public class PropertiesReader {
 
     public static Properties properties;
 
+
     public static Properties readProperties() {
         FileReader reader;
 
         try {
-            reader = new FileReader("configuration.properties");
+             reader = new FileReader("configuration.properties");
         } catch (FileNotFoundException e) {
             throw new PropertyReadingException(e);
         }
