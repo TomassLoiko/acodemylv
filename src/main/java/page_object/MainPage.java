@@ -11,20 +11,29 @@ import java.util.List;
 public class MainPage {
 
     WebDriver driver;
-    //private final By productsElements = By.xpath("//ul[contains(@class,'products')]/li");
-    @FindBy(xpath = "//ul[contains(@class,'products')]/li")
-    List<WebElement> productElementsPf;
+    private  final By productsElements = By.xpath("//ul[contains(@class,'products')]/li\n");
+
 
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
     }
 
     public List<WebElement> getAllProducts() {
-        //return driver.findElements(productsElements);
-        return productElementsPf;
+        return driver.findElements(productsElements);
 
+    }
+
+
+    public void selectProductFromListByName(String productName) {
+        for(WebElement product : driver.findElements(productsElements)) {
+            if(product.getText().contains(productName)) {
+                product.click();
+
+                break;
+            }
+
+        }
     }
 
 }
