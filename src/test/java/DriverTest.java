@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import page_object.MainPage;
 import utils.PropertiesReader;
+import utils.WebDriverManager;
 
 import java.lang.reflect.Array;
 
@@ -14,15 +15,13 @@ import static utils.PropertiesReader.*;
 
 public class DriverTest {
 
-    WebDriver driver;
+    WebDriver driver = WebDriverManager.getInstance();
+    MainPage mainPage = new MainPage();
 
-    MainPage mainPage;
 
     @BeforeEach
     public void setUp() {
-      System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-      driver =  new ChromeDriver();
-      mainPage = new MainPage(driver);
+      //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
       driver.get(getProperties().getProperty("home.page"));
     }
 
