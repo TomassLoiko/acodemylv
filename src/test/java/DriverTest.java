@@ -2,12 +2,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import page_object.MainPage;
-import utils.PropertiesReader;
-import utils.WebDriverManager;
-
-import java.lang.reflect.Array;
+import utils.LocalDriverManager;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -15,13 +11,12 @@ import static utils.PropertiesReader.*;
 
 public class DriverTest {
 
-    WebDriver driver = WebDriverManager.getInstance();
-    MainPage mainPage = new MainPage();
+    private final WebDriver driver = LocalDriverManager.getInstance();
+    private final MainPage mainPage = new MainPage();
 
 
     @BeforeEach
     public void setUp() {
-      //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
       driver.get(getProperties().getProperty("home.page"));
     }
 

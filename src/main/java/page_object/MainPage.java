@@ -3,13 +3,13 @@ package page_object;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import utils.WebDriverManager;
+import utils.LocalDriverManager;
 
 import java.util.List;
 
 public class MainPage {
 
-    WebDriver driver = WebDriverManager.getInstance();
+    WebDriver driver = LocalDriverManager.getInstance();
     private final By productsElements = By.xpath("//ul[contains(@class,'products')]/li");
 
     public List<WebElement> getAllProducts() {
