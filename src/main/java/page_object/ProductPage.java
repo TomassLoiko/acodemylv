@@ -1,9 +1,7 @@
 package page_object;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.LocalDriverManager;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;

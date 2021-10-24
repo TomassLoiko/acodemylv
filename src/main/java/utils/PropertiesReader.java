@@ -1,7 +1,5 @@
 package utils;
-
 import exceptions.PropertyReadingException;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

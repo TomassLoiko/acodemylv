@@ -1,5 +1,4 @@
 package utils;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -47,10 +46,17 @@ public class LocalDriverManager {
                 return new EdgeDriver();
             default:
                 throw new UnsupportedOperationException(browser + " browser is not supported!");
-
-
         }
 
+    }
+    public static DesiredCapabilities setUpCapabilities() {
+        // example of how manage your code better
+        return new DesiredCapabilities();
+    }
+
+    public static void closeDriver() {
+        driver.quit();
+        driver = null;
     }
 
 }

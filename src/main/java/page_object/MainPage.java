@@ -1,10 +1,8 @@
 package page_object;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.LocalDriverManager;
-
 import java.util.List;
 
 public class MainPage {

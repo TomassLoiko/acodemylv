@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import page_object.MainPage;
 import utils.LocalDriverManager;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static utils.PropertiesReader.*;
