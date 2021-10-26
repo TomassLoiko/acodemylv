@@ -3,7 +3,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.LocalDriverManager;
+import utils.SharedContext;
+import utils.StaticKeys;
+
 import java.util.List;
+
+import static utils.StaticKeys.CURRENT_ITEM;
 
 public class MainPage {
 
@@ -19,6 +24,8 @@ public class MainPage {
                 .filter(product -> product.getText().contains(productName))
                 .findFirst()
                 .ifPresent(WebElement::click);
+
+        SharedContext.setValue(CURRENT_ITEM, productName);
 
 //        for(WebElement product : driver.findElements(productsElements)) {
 //            if(product.getText().contains(productName)) {

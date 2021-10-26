@@ -37,7 +37,7 @@ public class DriverTest {
 
     @AfterEach
     public void tearDown() {
-        driver.quit();
+        LocalDriverManager.closeDriver();
     }
 
 }

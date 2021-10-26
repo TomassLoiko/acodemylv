@@ -22,11 +22,13 @@ public class CouponCodeTest {
     @Test
     public void applyCouponTest() {
         mainPage.selectProductFromListByName("Polo")
-                .addProductToCart();
+                .addProductToCart()
+                .openCartPage()
+                .applyCouponCode("acodemy10off");
     }
 
     @AfterEach
     public void tearDown() {
-        driver.quit();
+        LocalDriverManager.closeDriver();
     }
 }
