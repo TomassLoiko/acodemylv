@@ -8,6 +8,7 @@ import utils.StaticKeys;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static page_object.StaticWebElements.*;
+import static utils.Messages.PRODUCT_ADDED_TO_CART;
 
 public class ProductPage {
 
@@ -18,7 +19,7 @@ public class ProductPage {
     public ProductPage addProductToCart() {
         driver.findElement(addToCartElement).click();
         assertThat(driver.findElement(SUCCESS_MESSAGE_ELEMENT).isDisplayed(), is(Boolean.TRUE));
-        assertThat(driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(), equalTo(String.format("“%s” has been added to your cart.", SharedContext.getValue(StaticKeys.CURRENT_ITEM))));
+        assertThat(driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(), containsString(String.format(PRODUCT_ADDED_TO_CART, SharedContext.getValue(StaticKeys.CURRENT_ITEM))));
         return this;
     }
 
