@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.LocalDriverManager;
 import utils.Messages;
+import utils.PropertiesReader;
 
 import java.time.Duration;
 
@@ -26,7 +27,7 @@ public class CartPage {
     private  final  By applyCouponButton = By.name("apply_coupon");
 
     public CartPage() {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
 
     }
 
