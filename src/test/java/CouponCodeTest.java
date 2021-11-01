@@ -22,13 +22,23 @@ public class CouponCodeTest {
     }
 
     @ParameterizedTest(name = "Buy product with name {0} and apply coupon {1}")
-    @CsvSource({"Belt,acodemy10off", "Album, acodemy20off"})
+    @CsvSource({"Belt,acodemy10off", "Album,acodemy20off"})
     public void applyCouponTest(String productName, String couponCode) {
         mainPage.selectProductFromListByName(productName)
                 .addProductToCart()
                 .openCartPage()
                 .applyCouponCode(couponCode);
     }
+
+    @ParameterizedTest(name = "Can't buy product with name {0} and with incorrect coupon {1}")
+    @CsvSource({"Cap,qwerty", "Single,abcdefgh"})
+    public void incorrectCouponCodeMessageTest(String productName, String couponCode) {
+        mainPage.selectProductFromListByName(productName)
+                .addProductToCart()
+                .openCartPage()
+                .incorrectCouponCodeMessage(couponCode);
+    }
+
 
     @AfterEach
     public void tearDown() {

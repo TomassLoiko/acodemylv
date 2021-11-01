@@ -7,17 +7,18 @@ import org.openqa.selenium.devtools.Message;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.LocalDriverManager;
-import utils.Messages;
-import utils.PropertiesReader;
+import utils.*;
 
 import java.time.Duration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static page_object.StaticWebElements.*;
-import static utils.Messages.COUPON_APPLIED_MESSAGE;
+import static utils.Messages.*;
+import static utils.StaticKeys.CURRENT_COUPON;
+import static utils.StaticKeys.CURRENT_ITEM;
 
 public class CartPage {
 
@@ -39,8 +40,21 @@ public class CartPage {
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
         return  this;
 
+    }
+
+
+    public CartPage incorrectCouponCodeMessage (String couponCode) {
+        SharedContext.setValue(CURRENT_COUPON, couponCode);
+        driver.findElement(couponCodeField).sendKeys(couponCode);
+        driver.findElement(applyCouponButton).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(ERROR_MESSAGE_ELEMENT));
+        assertThat("Message is not correct", driver.findElement(ERROR_MESSAGE_ELEMENT).getText(),containsString(String.format(COUPON_DOES_NOT_EXIST, SharedContext.getValue(StaticKeys.CURRENT_COUPON))));
+        return  this;
+
 
     }
+
+
 
 
 
