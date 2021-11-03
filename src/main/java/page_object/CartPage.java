@@ -26,6 +26,7 @@ public class CartPage {
     private WebDriverWait wait;
     private  final  By couponCodeField = By.id("coupon_code");
     private  final  By applyCouponButton = By.name("apply_coupon");
+    private final By cartDiscountCoupon = By.xpath("//tr[contains(@class, 'cart-discount coupon')]/th");
 
     public CartPage() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
@@ -38,6 +39,8 @@ public class CartPage {
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
+        wait.until(ExpectedConditions.presenceOfElementLocated(cartDiscountCoupon));
+        assertThat("Element does not contain the current coupon code", driver.findElement(cartDiscountCoupon).getText(), containsString(String.format("%s", couponCode)));
         return  this;
 
     }
