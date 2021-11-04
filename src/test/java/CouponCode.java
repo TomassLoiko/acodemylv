@@ -10,7 +10,7 @@ import static utils.PropertiesReader.getProperties;
 
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CouponCodeTest {
+public class CouponCode {
 
     private final WebDriver driver = LocalDriverManager.getInstance();
     private final MainPage mainPage = new MainPage();
