@@ -8,7 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static utils.PropertiesReader.*;
 
-public class DriverTes {
+public class DriverTest {
 
     private final WebDriver driver = LocalDriverManager.getInstance();
     private final MainPage mainPage = new MainPage();
