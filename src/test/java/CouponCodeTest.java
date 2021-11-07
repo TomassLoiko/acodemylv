@@ -40,6 +40,17 @@ public class CouponCodeTest {
                 .incorrectCouponCodeMessage(couponCode);
     }
 
+    @ParameterizedTest(name =  "{0} {1} {2}")
+    @CsvSource({"Belt, easy_discount, 5"})
+    @Order(3)
+    public void removeCurrentCoupon(String productName, String couponCode, int discount) {
+        mainPage.selectProductFromListByName(productName)
+                .addProductToCart()
+                .openCartPage()
+                .removeCoupon();
+
+    }
+
 
     @AfterEach
     public void tearDown() {
