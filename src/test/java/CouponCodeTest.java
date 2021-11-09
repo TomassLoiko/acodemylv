@@ -3,6 +3,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebDriver;
+import page_object.CartPage;
 import page_object.MainPage;
 import utils.LocalDriverManager;
 
@@ -14,6 +15,7 @@ public class CouponCodeTest {
 
     private final WebDriver driver = LocalDriverManager.getInstance();
     private final MainPage mainPage = new MainPage();
+    private final CartPage cartPage = new CartPage();
 
     @BeforeEach
     public void setUp() {
@@ -22,7 +24,7 @@ public class CouponCodeTest {
 
     @ParameterizedTest(name = "Buy product with name {0} and apply coupon {1}")
     @CsvSource({"Belt,acodemy10off", "Album,acodemy20off"})
-    @Order(1)
+    @Order(3)
     public void applyCouponTest(String productName, String couponCode) {
         mainPage.selectProductFromListByName(productName)
                 .addProductToCart()
@@ -40,14 +42,16 @@ public class CouponCodeTest {
                 .incorrectCouponCodeMessage(couponCode);
     }
 
-    @ParameterizedTest(name =  "{0} {1} {2}")
-    @CsvSource({"Belt, easy_discount, 5"})
-    @Order(3)
-    public void removeCurrentCoupon(String productName, String couponCode, int discount) {
+    @ParameterizedTest(name =  "{0} {1} {2} {3}")
+    @CsvSource({"Belt,easy_discount,additional_discount,5.0"})
+    @Order(1)
+    public void removeCurrentCoupon(String productName, String couponCode, String additionalCouponCode, Float discountAmount) {
         mainPage.selectProductFromListByName(productName)
                 .addProductToCart()
                 .openCartPage()
-                .removeCoupon();
+                .applyAdditionalCouponCode(additionalCouponCode)
+                .applyCouponCode(couponCode);
+                //.cartTotalsContent();
 
     }
 

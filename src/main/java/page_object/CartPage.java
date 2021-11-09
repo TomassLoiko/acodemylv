@@ -1,6 +1,7 @@
 package page_object;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.devtools.Message;
@@ -10,11 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.*;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 import static page_object.StaticWebElements.*;
 import static utils.Messages.*;
 import static utils.StaticKeys.CURRENT_COUPON;
@@ -28,6 +31,7 @@ public class CartPage {
     private  final  By applyCouponButton = By.name("apply_coupon");
     private final By cartDiscountCoupon = By.xpath("//tr[contains(@class, 'cart-discount coupon')]/th");
     private final By subtotalValueObject = By.xpath("//tr[@class='cart-subtotal']//bdi");
+    private final By couponDiscountValueObject = By.xpath("//tr[contains(@class, 'cart-discount coupon')]//span[@class='woocommerce-Price-amount amount']");
 
     public CartPage() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
@@ -40,9 +44,13 @@ public class CartPage {
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
-        wait.until(ExpectedConditions.presenceOfElementLocated(cartDiscountCoupon));
-        assertThat("The cart totals does not contain the current coupon code", driver.findElement(cartDiscountCoupon).getText(), containsString(String.format("%s", couponCode)));
-
+        return  this;
+    }
+    public  CartPage applyAdditionalCouponCode(String additionalCouponCode) {
+        driver.findElement(couponCodeField).sendKeys(additionalCouponCode);
+        driver.findElement(applyCouponButton).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
+        assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
         return  this;
     }
 
@@ -56,10 +64,17 @@ public class CartPage {
         return  this;
     }
 
-    public CartPage removeCoupon () {
+    public List<WebElement> getAllCartDiscountCoupons() {
+        return driver.findElements(cartDiscountCoupon);
+    }
 
-        Float subtotalValue = Float.parseFloat(driver.findElement(subtotalValueObject).getText().substring(1));
-        System.out.printf("lalala %.2f\n", subtotalValue);
+    public CartPage cartTotalsContent() {
+//        wait.until(ExpectedConditions.presenceOfElementLocated(cartDiscountCoupon));
+//        assertThat("The cart totals does not contain the current coupon code", driver.findElement(cartDiscountCoupon).getText(), containsString(String.format("Coupon: %s", couponCode)));
+//        Float subtotalValue = Float.parseFloat(driver.findElement(subtotalValueObject).getText().substring(1));
+//        Float couponDiscountValue = Float.parseFloat(driver.findElement(couponDiscountValueObject).getText().substring(1));
+//        assertEquals("The coupon discount amount does not match", discountAmount, couponDiscountValue/subtotalValue*100, 0);
+        System.out.println("Number of elements" + getAllCartDiscountCoupons().size());
 
 
         return this;
