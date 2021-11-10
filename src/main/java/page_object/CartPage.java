@@ -1,17 +1,13 @@
 package page_object;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.Message;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import utils.*;
 
 import java.time.Duration;
 import java.util.List;
+
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -26,28 +22,28 @@ import static utils.StaticKeys.CURRENT_ITEM;
 public class CartPage {
 
     private  final WebDriver driver = LocalDriverManager.getInstance();
-    private WebDriverWait wait;
+    private Wait<WebDriver> wait;
     private  final  By couponCodeField = By.id("coupon_code");
     private  final  By applyCouponButton = By.name("apply_coupon");
     private final By cartDiscountCoupon = By.xpath("//tr[contains(@class, 'cart-discount coupon')]/th");
     private final By subtotalValueObject = By.xpath("//tr[@class='cart-subtotal']//bdi");
     private final By couponDiscountValueObject = By.xpath("//tr[contains(@class, 'cart-discount coupon')]//span[@class='woocommerce-Price-amount amount']");
 
-    public CartPage() {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
+//    public CartPage() {
+//        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
+//
+//    }
 
+    public CartPage() {
+        wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoring(NoSuchElementException.class);
     }
 
 
     public  CartPage applyCouponCode(String couponCode) {
         driver.findElement(couponCodeField).sendKeys(couponCode);
-        driver.findElement(applyCouponButton).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
-        assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
-        return  this;
-    }
-    public  CartPage applyAdditionalCouponCode(String additionalCouponCode) {
-        driver.findElement(couponCodeField).sendKeys(additionalCouponCode);
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
@@ -64,9 +60,10 @@ public class CartPage {
         return  this;
     }
 
-    public List<WebElement> getAllCartDiscountCoupons() {
-        return driver.findElements(cartDiscountCoupon);
-    }
+//    public List<WebElement> getAllCartDiscountCoupons() {
+//        return driver.findElements(cartDiscountCoupon);
+//    }
+
 
     public CartPage cartTotalsContent() {
 //        wait.until(ExpectedConditions.presenceOfElementLocated(cartDiscountCoupon));
@@ -74,7 +71,10 @@ public class CartPage {
 //        Float subtotalValue = Float.parseFloat(driver.findElement(subtotalValueObject).getText().substring(1));
 //        Float couponDiscountValue = Float.parseFloat(driver.findElement(couponDiscountValueObject).getText().substring(1));
 //        assertEquals("The coupon discount amount does not match", discountAmount, couponDiscountValue/subtotalValue*100, 0);
-        System.out.println("Number of elements" + getAllCartDiscountCoupons().size());
+        List<WebElement> allCartDiscountCoupons = driver.findElements(By.xpath("//*[contains(@class, 'woo')]"));
+        for(WebElement coupon: allCartDiscountCoupons) {
+            System.out.println(coupon.getText());
+        }
 
 
         return this;
@@ -86,3 +86,4 @@ public class CartPage {
 
 
 }
+
