@@ -32,7 +32,7 @@ public class LocalDriverManager {
             case "CHROME":
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--incognito"); // --headless
+                chromeOptions.addArguments(); // --headless --incognito
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 chromeOptions.merge(chromeOptions);

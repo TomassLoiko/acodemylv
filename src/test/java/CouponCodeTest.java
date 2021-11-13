@@ -42,16 +42,17 @@ public class CouponCodeTest {
                 .incorrectCouponCodeMessage(couponCode);
     }
 
-    @ParameterizedTest(name =  "{0} {1} {2} {3}")
-    @CsvSource({"Belt,easy_discount,additional_discount,5.0"})
+    @ParameterizedTest(name =  "{0} {1} {2} {3} {4}")
+    @CsvSource({"Belt,easy_discount,5.0,additional_discount,10.0"})
     @Order(3)
-    public void removeCurrentCoupon(String productName, String couponCode, String additionalCouponCode, Float discountAmount) {
+    public void cartTotalsCouponsTest(String productName, String couponCode, Float discountPercentage, String additionalCouponCode, Float additionalDiscountPercentage) {
         mainPage.selectProductFromListByName(productName)
                 .addProductToCart()
                 .openCartPage()
                 .applyCouponCode(couponCode)
+                .cartTotalsCoupons(couponCode, discountPercentage)
                 .applyCouponCode(additionalCouponCode)
-                .cartTotalsContent();
+                .cartTotalsCoupons(additionalCouponCode, additionalDiscountPercentage);
 
     }
 
