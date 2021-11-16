@@ -45,7 +45,7 @@ public class CouponCodeTest {
     @ParameterizedTest(name =  "Buy product with name {0} and apply coupon {1} {2}% together with coupon {3} {4}%")
     @CsvSource({"Belt,easy_discount,5.0,additional_discount,10.0"})
     @Order(3)
-    public void cartTotalsCouponsTest(String productName, String couponCode, Float discountPercentage, String additionalCouponCode, Float additionalDiscountPercentage) {
+    public void applyMultipleCouponsTest(String productName, String couponCode, Float discountPercentage, String additionalCouponCode, Float additionalDiscountPercentage) {
         mainPage.selectProductFromListByName(productName)
                 .addProductToCart()
                 .openCartPage()
@@ -53,6 +53,19 @@ public class CouponCodeTest {
                 .cartTotalsCoupons(couponCode, discountPercentage)
                 .applyCouponCode(additionalCouponCode)
                 .cartTotalsCoupons(additionalCouponCode, additionalDiscountPercentage);
+
+    }
+
+    @ParameterizedTest(name = "Add product {0} to cart, apply coupon {1} and remove one")
+    @CsvSource({"Cap,easy_discount"})
+    @Order(4)
+    public void removeCouponTest(String productName, String couponCode) {
+        mainPage.selectProductFromListByName(productName)
+                .addProductToCart()
+                .openCartPage()
+                .applyCouponCode(couponCode)
+                .removeCoupon(couponCode);
+
 
     }
 
