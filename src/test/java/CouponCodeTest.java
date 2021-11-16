@@ -42,7 +42,7 @@ public class CouponCodeTest {
                 .incorrectCouponCodeMessage(couponCode);
     }
 
-    @ParameterizedTest(name =  "{0} {1} {2} {3} {4}")
+    @ParameterizedTest(name =  "Buy product with name {0} and apply coupon {1} {2}% together with coupon {3} {4}%")
     @CsvSource({"Belt,easy_discount,5.0,additional_discount,10.0"})
     @Order(3)
     public void cartTotalsCouponsTest(String productName, String couponCode, Float discountPercentage, String additionalCouponCode, Float additionalDiscountPercentage) {

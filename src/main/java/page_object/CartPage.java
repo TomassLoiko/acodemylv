@@ -23,24 +23,25 @@ public class CartPage {
     private Wait<WebDriver> wait;
     private  final  By couponCodeField = By.id("coupon_code");
     private  final  By applyCouponButton = By.name("apply_coupon");
-    private final By cartTotalsCouponObject = By.xpath("//tr[contains(@class, 'cart-discount coupon')]/th");
     private final By cartTotalsSubtotalValueObject = By.xpath("//tr[@class='cart-subtotal']//bdi");
-    private final By cartTotalsDiscountValueObject = By.xpath("//tr[contains(@class, 'cart-discount coupon')]//span[@class='woocommerce-Price-amount amount']");
-    private List<WebElement> allCartTotalsCoupons;
-    private List<WebElement> allCartTotalsDiscountValues;
-    private int size;
-
-//    public CartPage() {
-//        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
-//
-//    }
+    private final By cartTotalsCouponObject = By.xpath("(//tr[contains(@class, 'cart-discount coupon')]/th)[last()]"); //Using List<WebElement> remove ()[last()] from locator
+    private final By cartTotalsDiscountValueObject = By.xpath("(//tr[contains(@class, 'cart-discount coupon')]//span[@class='woocommerce-Price-amount amount'])[last()]"); //Using List<WebElement> remove ()[last()] from locator
+    private final By removeButton = By.xpath("(//a[@data-coupon])[last()]");
+//    private List<WebElement> allCartTotalsCoupons;
+//    private List<WebElement> allCartTotalsDiscountValues;
+//    private int size;
 
     public CartPage() {
-        wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))))
-                .pollingEvery(Duration.ofSeconds(1))
-                .ignoring(NoSuchElementException.class);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))));
+
     }
+
+//    public CartPage() {
+//        wait = new FluentWait<>(driver)
+//                .withTimeout(Duration.ofSeconds(Long.parseLong(PropertiesReader.readProperties().getProperty("explicit.wait"))))
+//                .pollingEvery(Duration.ofSeconds(1))
+//                .ignoring(NoSuchElementException.class);
+//    }
 
 
     public  CartPage applyCouponCode(String couponCode) {
@@ -48,6 +49,10 @@ public class CartPage {
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
+        assertThat("The coupon code field is not empty", driver.findElement(couponCodeField).getAttribute("Value").isEmpty());
+        assertThat("The coupon code field does not contain the placeholder", driver.findElement(couponCodeField).getAttribute("placeholder"),equalTo("Coupon code"));
+        wait.until(ExpectedConditions.attributeContains(removeButton,"data-coupon", couponCode));
+        assertThat("The remove button is absent", driver.findElement(removeButton).getAttribute("data-coupon"),containsString(String.format(couponCode)));
         return  this;
     }
 
@@ -64,30 +69,32 @@ public class CartPage {
 
 
 
+//    public CartPage cartTotalsCoupons(String couponCode, Float discountPercentage) {
+//        wait.until(ExpectedConditions.attributeContains(removeButton,"data-coupon", couponCode));
+//
+//        allCartTotalsCoupons = driver.findElements(cartTotalsCouponObject);
+//        size = allCartTotalsCoupons.size()-1;
+//        assertThat("The cart totals does not contain the current coupon code", allCartTotalsCoupons.get(size).getText(), containsString(String.format("Coupon: %s", couponCode)));
+//
+//        allCartTotalsDiscountValues = driver.findElements(cartTotalsDiscountValueObject);
+//        Float subtotalValue = Float.parseFloat(driver.findElement(cartTotalsSubtotalValueObject).getText().substring(1));
+//        Float couponDiscountValue = Float.parseFloat(allCartTotalsDiscountValues.get(size).getText().substring(1));
+//        assertEquals("The coupon discount amount does not match", discountPercentage, couponDiscountValue/subtotalValue*100, 0);
+//        return this;
+//    }
+
     public CartPage cartTotalsCoupons(String couponCode, Float discountPercentage) {
-//        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
-//        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(cartDiscountCoupon));
-//        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(cartDiscountCoupon, size));
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(cartTotalsCouponObject, couponCode));
 
-        allCartTotalsCoupons = driver.findElements(cartTotalsCouponObject);
-        size = allCartTotalsCoupons.size()-1;
-        assertThat("The cart totals does not contain the current coupon code", allCartTotalsCoupons.get(size).getText(), containsString(String.format("Coupon: %s", couponCode)));
+        assertThat("The cart totals does not contain the current coupon code", driver.findElement(cartTotalsCouponObject).getText(), containsString(String.format("Coupon: %s", couponCode)));
 
-        allCartTotalsDiscountValues = driver.findElements(cartTotalsDiscountValueObject);
         Float subtotalValue = Float.parseFloat(driver.findElement(cartTotalsSubtotalValueObject).getText().substring(1));
-        Float couponDiscountValue = Float.parseFloat(allCartTotalsDiscountValues.get(size).getText().substring(1));
+        Float couponDiscountValue = Float.parseFloat(driver.findElement(cartTotalsDiscountValueObject).getText().substring(1));
         assertEquals("The coupon discount amount does not match", discountPercentage, couponDiscountValue/subtotalValue*100, 0);
-
-        System.out.println(allCartTotalsCoupons.get(size).getText());
-        System.out.println(allCartTotalsDiscountValues.get(size).getText());
 
         return this;
     }
+
 
 
 
