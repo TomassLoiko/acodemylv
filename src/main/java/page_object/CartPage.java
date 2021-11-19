@@ -44,10 +44,9 @@ public class CartPage {
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(),equalTo(COUPON_APPLIED_MESSAGE));
+        wait.until(ExpectedConditions.attributeContains(removeButton,"data-coupon", couponCode));
         assertThat("The coupon code field is not empty", driver.findElement(couponCodeField).getAttribute("Value").isEmpty());
         assertThat("The coupon code field does not contain the placeholder", driver.findElement(couponCodeField).getAttribute("placeholder"),equalTo("Coupon code"));
-        wait.until(ExpectedConditions.attributeContains(removeButton,"data-coupon", couponCode));
-        assertThat("The remove button is absent", driver.findElement(removeButton).getAttribute("data-coupon"),containsString(String.format(couponCode)));
         return  this;
     }
 
@@ -57,6 +56,8 @@ public class CartPage {
         driver.findElement(applyCouponButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(ERROR_MESSAGE_ELEMENT));
         assertThat("Message is not correct", driver.findElement(ERROR_MESSAGE_ELEMENT).getText(),containsString(String.format(COUPON_DOES_NOT_EXIST, SharedContext.getValue(StaticKeys.CURRENT_COUPON))));
+        assertThat("The coupon code field is not empty", driver.findElement(couponCodeField).getAttribute("Value").isEmpty());
+        assertThat("The coupon code field does not contain the placeholder", driver.findElement(couponCodeField).getAttribute("placeholder"),equalTo("Coupon code"));
         return  this;
     }
 
@@ -74,9 +75,11 @@ public class CartPage {
 //        return this;
 //    }
 
+
     public CartPage cartTotalsCoupons(String couponCode, Float discountPercentage) {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(cartTotalsCouponObject, couponCode));
         assertThat("The cart totals does not contain the current coupon code", driver.findElement(cartTotalsCouponObject).getText(), containsString(String.format("Coupon: %s", couponCode)));
+        assertThat("The remove button is absent", driver.findElement(removeButton).getAttribute("data-coupon"),containsString(String.format(couponCode)));
         Float subtotalValue = Float.parseFloat(driver.findElement(cartTotalsSubtotalValueObject).getText().substring(1));
         Float couponDiscountValue = Float.parseFloat(driver.findElement(cartTotalsDiscountValueObject).getText().substring(1));
         assertEquals("The coupon discount amount does not match", discountPercentage, couponDiscountValue/subtotalValue*100, 0);
@@ -88,8 +91,18 @@ public class CartPage {
         driver.findElement(removeButton).click();
         wait.until(ExpectedConditions.stalenessOf(driver.findElement(SUCCESS_MESSAGE_ELEMENT)));
         wait.until(ExpectedConditions.presenceOfElementLocated(SUCCESS_MESSAGE_ELEMENT));
-        assertThat("The coupon has not deleted", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(), equalTo(COUPON_IS_DELETED));
+        assertThat("The coupon has not removed", driver.findElement(SUCCESS_MESSAGE_ELEMENT).getText(), equalTo(COUPON_IS_DELETED));
         return this;
+    }
+
+    public CartPage expiredCoupon(String couponCode) {
+        driver.findElement(couponCodeField).sendKeys(couponCode);
+        driver.findElement(applyCouponButton).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(ERROR_MESSAGE_ELEMENT));
+        assertThat("Message is not correct", driver.findElement(ERROR_MESSAGE_ELEMENT).getText(), equalTo(COUPON_IS_EXPIRED));
+        assertThat("The coupon code field is not empty", driver.findElement(couponCodeField).getAttribute("Value").isEmpty());
+        assertThat("The coupon code field does not contain the placeholder", driver.findElement(couponCodeField).getAttribute("placeholder"),equalTo("Coupon code"));
+        return  this;
 
     }
 

@@ -7,6 +7,8 @@ import page_object.CartPage;
 import page_object.MainPage;
 import utils.LocalDriverManager;
 
+import java.security.PublicKey;
+
 import static utils.PropertiesReader.getProperties;
 
 @Slf4j
@@ -53,7 +55,6 @@ public class CouponCodeTest {
                 .cartTotalsCoupons(couponCode, discountPercentage)
                 .applyCouponCode(additionalCouponCode)
                 .cartTotalsCoupons(additionalCouponCode, additionalDiscountPercentage);
-
     }
 
     @ParameterizedTest(name = "Add product {0} to cart, apply coupon {1} and remove one")
@@ -65,6 +66,17 @@ public class CouponCodeTest {
                 .openCartPage()
                 .applyCouponCode(couponCode)
                 .removeCoupon(couponCode);
+    }
+
+    @ParameterizedTest(name = "Impossible use expired coupon {1}")
+    @CsvSource({"Hoodie with Zipper,expired"})
+    @Order(5)
+    public void expiredCouponTest(String productName, String couponCode) {
+        mainPage.selectProductFromListByName(productName)
+                .addProductToCart()
+                .openCartPage()
+                .expiredCoupon(couponCode);
+
 
 
     }
