@@ -7,8 +7,6 @@ import page_object.CartPage;
 import page_object.MainPage;
 import utils.LocalDriverManager;
 
-import java.security.PublicKey;
-
 import static utils.PropertiesReader.getProperties;
 
 @Slf4j
@@ -52,9 +50,8 @@ public class CouponCodeTest {
                 .addProductToCart()
                 .openCartPage()
                 .applyCouponCode(couponCode)
-                .cartTotalsCoupons(couponCode, discountPercentage)
                 .applyCouponCode(additionalCouponCode)
-                .cartTotalsCoupons(additionalCouponCode, additionalDiscountPercentage);
+                .applyMultipleCoupons(couponCode, discountPercentage, additionalCouponCode, additionalDiscountPercentage);
     }
 
     @ParameterizedTest(name = "Add product {0} to cart, apply coupon {1} and remove one")
@@ -68,7 +65,7 @@ public class CouponCodeTest {
                 .removeCoupon(couponCode);
     }
 
-    @ParameterizedTest(name = "Impossible use expired coupon {1}")
+    @ParameterizedTest(name = "That is impossible to use expired coupon with name {1}")
     @CsvSource({"Hoodie with Zipper,expired"})
     @Order(5)
     public void expiredCouponTest(String productName, String couponCode) {
@@ -76,11 +73,19 @@ public class CouponCodeTest {
                 .addProductToCart()
                 .openCartPage()
                 .expiredCoupon(couponCode);
-
-
-
     }
 
+    @ParameterizedTest(name =  "Buy product with name {0} and apply coupon {1} {2}% together with coupon {3} {4}%")
+    @CsvSource({"Belt,acodemy10off,10.0,acodemy20off,20.0"})
+    @Order(6)
+    public void couponsCannotBeUsedTogetherTest(String productName, String firstCouponCode, Float firstDiscountPercentage, String secondCouponCode, Float secondDiscountPercentage) {
+        mainPage.selectProductFromListByName(productName)
+                .addProductToCart().openCartPage()
+                .applyCouponCode(firstCouponCode)
+                .couponsCannotBeUsedTogether(firstCouponCode, firstDiscountPercentage)
+                .applyCouponCode(secondCouponCode)
+                .couponsCannotBeUsedTogether(secondCouponCode, secondDiscountPercentage);
+    }
 
     @AfterEach
     public void tearDown() {
